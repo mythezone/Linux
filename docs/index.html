@@ -1,0 +1,253 @@
+<!--index.html-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>计算机程序设计艺术-Mythezone</title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="Description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <!-- vue主题样式 -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+    <!-- 暗黑主题插件样式 -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/style.min.css"
+        title="docsify-darklight-theme" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
+    <link rel="stylesheet" href="custom.css">
+
+</head>
+
+<body>
+    <div id="app">一起学TAOCP吧，冲呀。。。。</div>
+    <!-- 在github上编辑插件 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script>
+    <script>
+        window.$docsify = {
+            basePath: '/', // 资源相对路径
+            name: '计算机程序设计艺术', // 文档标题，会显示在侧边栏顶部
+            nameLink: '/', // 点击文档标题后的跳转地址
+            repo: 'mythezone/TAOCP', // 有repo属性则右上角会展示github图标，点击可进入
+            loadSidebar: true, // 加载侧边栏
+            externalLinkTarget: '_blank', // 外部链接的打开方式，默认_blank
+            cornerExternalLinkTarget: '_blank', // 右上角链接的打开方式。默认为 _blank
+            routerMode: 'hash', // 路由方式 默认hash
+            coverpage: false, // 展示封面
+            notFoundPage: true, // 在找不到指定页面时加载_404.md
+            auto2top: true, // 切换页面后是否自动跳转到页面顶部
+            search: { // 搜索插件配置
+                paths: 'auto',
+                placeholder: '🔍 搜索',
+                noData: '😞 没有结果!'
+            },
+            count: { // 字数统计插件配置
+                countable: true,
+                fontsize: '0.9em',
+                color: 'rgb(90,90,90)',
+                language: 'chinese'
+            },
+            pagination: { // 分页插件配置
+                previousText: '上一章节',
+                nextText: '下一章节',
+                crossChapter: true,
+            },
+            plugins: [
+                EditOnGithubPlugin.create(
+                    'https://github.com/lexmin0412/docsify-website-sample/blob/master/docs/',
+                    null,
+                    function (file) {
+                        if (file.indexOf('en') === -1) {
+                            return '在 GitHub 上编辑'
+                        } else {
+                            return 'Edit on Github'
+                        }
+                    }
+                )
+            ],
+            themeColor: "#42b983", // 暗黑模式主题色
+            darklightTheme: {
+                siteFont: "PT Sans",
+                defaultTheme: 'dark',
+                codeFontFamily: 'Roboto Mono, Monaco, courier, monospace',
+                bodyFontSize: '17px',
+                dark: {
+                    accent: '#42b983',
+                    toogleBackground: '#ffffff',
+                    background: '#091a28',
+                    textColor: '#b4b4b4',
+                    codeTextColor: '#ffffff',
+                    codeBackgroudColor: '#0e2233',
+                    borderColor: '#0d2538',
+                    blockQuoteColour: '#858585',
+                    highlightColor: '#d22778',
+                    sidebarSublink: '#b4b4b4',
+                    codeTypeColor: '#ffffff',
+                    coverBackground: 'linear-gradient(to left bottom, hsl(118, 100%, 85%) 0%,hsl(181, 100%, 85%) 100%)',
+                    toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/sun.svg)'
+                },
+                light: {
+                    accent: '#42b983',
+                    toogleBackground: '#091a28',
+                    background: '#ffffff',
+                    textColor: '#34495e',
+                    codeTextColor: '#525252',
+                    codeBackgroudColor: '#f8f8f8',
+                    borderColor: 'rgba(0, 0, 0, 0.07)',
+                    blockQuoteColor: '#858585',
+                    highlightColor: '#d22778',
+                    sidebarSublink: '#b4b4b4',
+                    codeTypeColor: '#091a28',
+                    coverBackground: 'linear-gradient(to left bottom, hsl(118, 100%, 85%) 0%,hsl(181, 100%, 85%) 100%)',
+                    toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/moon.svg)'
+                }
+            },
+
+            // Or load from _footer.md
+            loadFooter: true,
+            loadFooter: '_footer.md',
+
+            // Latex plugtin:
+            latex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']], // default
+                displayMath: [['$$', '$$']],               // default
+            },
+            //draw.io support
+            //https://github.com/KonghaYao/docsify-drawio
+            markdown: {
+                renderer: {
+
+                    code: function (code, lang) {
+                        if (lang === 'drawio') {
+                            if (window.drawioConverter) {
+                                console.log('drawio 转化中')
+                                return window.drawioConverter(code)
+                            } else {
+                                return `<div class='drawio-code'>${code}</div>`
+                            }
+                        } else {
+                            return this.origin.code.apply(this, arguments);
+                        }
+
+                        //PDF Render
+                        var renderer_func = function (code, lang, base = null) {
+                            var pdf_renderer = function (code, lang, verify) {
+                                function unique_id_generator() {
+                                    function rand_gen() {
+                                        return Math.floor((Math.random() + 1) * 65536).toString(16).substring(1);
+                                    }
+                                    return rand_gen() + rand_gen() + '-' + rand_gen() + '-' + rand_gen() + '-' + rand_gen() + '-' + rand_gen() + rand_gen() + rand_gen();
+                                }
+                                if (lang && !lang.localeCompare('pdf', 'en', { sensitivity: 'base' })) {
+                                    if (verify) {
+                                        return true;
+                                    } else {
+                                        var divId = "markdown_code_pdf_container_" + unique_id_generator().toString();
+                                        var container_list = new Array();
+                                        if (localStorage.getItem('pdf_container_list')) {
+                                            container_list = JSON.parse(localStorage.getItem('pdf_container_list'));
+                                        }
+                                        container_list.push({ "pdf_location": code, "div_id": divId });
+                                        localStorage.setItem('pdf_container_list', JSON.stringify(container_list));
+                                        return (
+                                            '<div style="margin-top:' + PDF_MARGIN_TOP + '; margin-bottom:' + PDF_MARGIN_BOTTOM + ';" id="' + divId + '">'
+                                            + '<a href="' + code + '"> Link </a> to ' + code +
+                                            '</div>'
+                                        );
+                                    }
+                                }
+                                return false;
+                            }
+                            if (pdf_renderer(code, lang, true)) {
+                                return pdf_renderer(code, lang, false);
+                            }
+                            /* SECTION START: Put other custom code rendering functions here
+                                i.e. If the language of the code block is LaTex, 
+                                put the code below to replace original code block with the text: 
+                                'Using LaTex is much better than handwriting!' inside a div container.
+                        
+                                if (lang == "latex") {
+                                    return ('<div class="container">Using LaTex is much better than handwriting!</div>');
+                                }
+                        
+                            SECTION END */
+                            return (base ? base : this.origin.code.apply(this, arguments));
+                        }
+                    }
+                }
+            },
+            //伪代码
+            pseudocode: {
+                indentSize: '1.2em',
+                commentDelimiter: '//',
+                lineNumber: false,
+                lineNumberPunc: ':',
+                noEnd: false,
+                titlePrefix: 'Algorithm'
+            },
+
+        }
+    </script>
+
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/docsify-ko-fi"></script>
+
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+<!--全局搜索插件-->
+<script src="//unpkg.com/docsify-count/dist/countable.js"></script>
+<!--字数统计插件-->
+<script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+<!--代码段复制插件-->
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+<!--图片缩放插件-->
+<script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+<!-- 阅读进度条插件 -->
+<script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/index.min.js"></script>
+<!-- 暗黑主题切换插件 -->
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+<!-- EMOJI支持插件 -->
+
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+<!-- 图片缩放插件 -->
+
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/external-script.min.js"></script>
+<!-- 外链脚本插件 -->
+
+<script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+<!-- 复制到剪贴板插件 -->
+
+<!-- use the footer plugin latest version -->
+<script src="//cdn.jsdelivr.net/npm/@alertbox/docsify-footer/dist/docsify-footer.min.js"></script>
+
+
+<script src="//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="//cdn.jsdelivr.net/npm/docsify-latex@0"></script>
+<!-- Latex page -->
+
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/h-hg/docsify-pseudocode/dist/docsify-pseudocode.min.js"></script>
+<!-- 伪代码 -->
+
+
+<!-- drawio -->
+<script src="https://cdn.jsdelivr.net/npm/docsify-drawio/viewer.min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/docsify-drawio/drawio.js'></script>
+
+
+<!-- PDF embedding -->
+<!-- PDFObject.js is a required dependency of this plugin -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
+<!-- This is the source code of the pdf embed plugin -->
+<script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script>
+
+语法高亮
+<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+<!-- <script src="commento.js"></script> -->
+<!-- docsify-ko-fi (latest) -->
+
+
+</html>
